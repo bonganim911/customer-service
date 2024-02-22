@@ -16,7 +16,28 @@ describe('Customer Routes', () => {
 
             // Mock the controller method
             (CustomerController.getTransactions as jest.Mock).mockImplementation(async (req, res) => {
-                const transactions = [{ id: 1, amount: 100 }, { id: 2, amount: 200 }];
+                const transactions = [
+                    {
+                        "createdAt": "2022-11-10T13:05:00+00:00",
+                        "updatedAt": "2022-11-10T13:05:00+00:00",
+                        "transactionId": 33,
+                        "authorizationCode": "F10016",
+                        "status": "SETTLED",
+                        "description": "Transfer to Bob",
+                        "transactionType": "P2P_SEND",
+                        "metadata": {
+                            "relatedTransactionId": 8,
+                            "deviceId": "A342011"
+                        },
+                        "timeline": [
+                            {
+                                "createdAt": "2022-11-10T13:05:00+00:00",
+                                "status": "SETTLED",
+                                "amount": -30
+                            }
+                        ]
+                    }
+                ];
                 res.json({ transactions });
             });
 
