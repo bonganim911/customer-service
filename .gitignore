@@ -1,0 +1,14 @@
+# IDE/Editor configuration
+.vscode/
+.idea/
+
+dist/
+
+# Code Coverage directories
+coverage/
+
+# Dependency directories
+node_modules/
+
+# Environment variables file
+.env
