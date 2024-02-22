@@ -7,7 +7,7 @@ Table of Contents
     * [Major Dependencies / Tools](#major-dependencies--tools)
     * [Checkout the Code](#checkout-the-code)
 * [Setting up Prerequisites](#setting-up-prerequisites)
-    * [npm setup](#npm setup)
+    * [npm setup](#npm-setup)
     * [Run service](#run-service)
 * [Running Quality Gates and Build Commands](#running-quality-gates-and-build-commands)
     * [Unit Tests](#unit-tests)
