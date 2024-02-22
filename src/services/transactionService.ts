@@ -82,35 +82,33 @@ class TransactionService {
         return {relatedCustomers};
     }
 
-     extractRelatedCustomers(customerId: number, transactions: Transaction[]) {
+    extractRelatedCustomers(customerId: number, transactions: Transaction[]) {
         const relatedCustomers: RelatedCustomer[] = [];
 
         for (const transaction of transactions) {
-            if (transaction.metadata) {
-                if (transaction.metadata.relatedTransactionId !== undefined) {
-                    const relatedTransaction = this.transactions.find(t => t.transactionId === transaction.metadata.relatedTransactionId);
-                    if (relatedTransaction) {
-                        let relationType: TransactionType | null = null;
-                        if (relatedTransaction.transactionType === TransactionType.P2P_SEND) {
-                            relationType = TransactionType.P2P_SEND;
-                        } else if (relatedTransaction.transactionType === TransactionType.P2P_RECEIVE) {
-                            relationType = TransactionType.P2P_RECEIVE;
-                        } else if (relatedTransaction.transactionType === TransactionType.DEVICE) {
-                            relationType = TransactionType.DEVICE;
-                        }
-                        if (relationType) {
-                            relatedCustomers.push({
-                                relatedCustomerId: relatedTransaction.customerId,
-                                relationType: relationType,
-                            });
-                        }
-                    }
-                } else if (transaction.metadata.deviceId) {
+            if (!transaction.metadata) continue;
+
+            if (transaction.metadata.relatedTransactionId !== undefined) {
+                const relatedTransaction = this.transactions.find(t => t.transactionId === transaction.metadata.relatedTransactionId);
+                if (!relatedTransaction) continue;
+
+                let relationType: TransactionType | null = null;
+                if (relatedTransaction.transactionType === TransactionType.P2P_SEND ||
+                    relatedTransaction.transactionType === TransactionType.P2P_RECEIVE ||
+                    relatedTransaction.transactionType === TransactionType.DEVICE) {
+                    relationType = relatedTransaction.transactionType;
+                }
+                if (relationType) {
                     relatedCustomers.push({
-                        relatedCustomerId: customerId,
-                        relationType: TransactionType.DEVICE,
+                        relatedCustomerId: relatedTransaction.customerId,
+                        relationType: relationType,
                     });
                 }
+            } else if (transaction.metadata.deviceId) {
+                relatedCustomers.push({
+                    relatedCustomerId: customerId,
+                    relationType: TransactionType.DEVICE,
+                });
             }
         }
         return relatedCustomers;
