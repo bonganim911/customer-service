@@ -45,7 +45,7 @@ describe('RelatedCustomersController', () => {
                 status: jest.fn().mockReturnThis(),
             } as unknown as Response;
 
-            const mockError = new Error('Invalid customer ID');
+            const mockError = new Error('Internal Server Error');
             (TransactionService.prototype.getRelatedCustomers as jest.Mock).mockRejectedValue(mockError);
 
             await RelatedCustomersController.getRelatedCustomers(mockReq, mockRes);
